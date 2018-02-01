@@ -1,10 +1,9 @@
-:set number relativenumber
 
-:augroup numbertoggle
-:  autocmd!
-:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-:augroup END
+" :augroup numbertoggle
+" :  autocmd!
+" :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+" :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+" :augroup END
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -13,12 +12,31 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+
+" IDE Tools
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'fatih/vim-go'
+Plug 'https://github.com/kien/ctrlp.vim.git'
+
+" Git
+Plug 'tpope/vim-fugitive', {'statusline': '%{fugitive#statusline()}'}
+
+" Syntax completion
 Plug 'w0rp/ale'
 Plug 'https://github.com/Quramy/tsuquyomi.git'
+
+" Go
+Plug 'fatih/vim-go'
+
 call plug#end()
 
-" run
-:NERDTreeToggle
+autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
+autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
+let g:ale_lint_on_text_changed = 'never'
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
+:set number
+:set tabstop=4 shiftwidth=4
+:set ignorecase
+:set smartcase
+:NERDTreeToggle
