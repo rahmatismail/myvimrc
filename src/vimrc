@@ -34,9 +34,25 @@ autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
 let g:ale_lint_on_text_changed = 'never'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+autocmd VimEnter * map <silent> <C-u> :tabm -1<CR>
+autocmd VimEnter * map <silent> <C-i> :tabm +1<CR>
+" autocmd VimEnter * map <silent> <C-u> :tabp<CR>
+" autocmd VimEnter * map <silent> <C-i> :tabn<CR>
 
+" set IDE view
 :set number
 :set tabstop=4 shiftwidth=4
 :set ignorecase
 :set smartcase
 :NERDTreeToggle
+
+" omnicompletion
+" always show menu
+:set completeopt=longest,menuone
+" trigger with . keypress
+function! OpenCompletion()
+	if !pumvisible() && v:char == '.'
+		call feedkeys("\<C-x>\<C-o>", "n")
+	endif
+endfunction
+autocmd InsertCharPre * call OpenCompletion()
