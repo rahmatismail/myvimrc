@@ -1,4 +1,3 @@
-
 " :augroup numbertoggle
 " :  autocmd!
 " :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
@@ -29,6 +28,7 @@ Plug 'fatih/vim-go'
 
 call plug#end()
 
+" key remapping
 autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
 autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
 let g:ale_lint_on_text_changed = 'never'
@@ -36,23 +36,33 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 autocmd VimEnter * map <silent> <C-u> :tabm -1<CR>
 autocmd VimEnter * map <silent> <C-i> :tabm +1<CR>
-" autocmd VimEnter * map <silent> <C-u> :tabp<CR>
-" autocmd VimEnter * map <silent> <C-i> :tabn<CR>
 
-" set IDE view
+" NERDTree stuff
+:NERDTreeToggle
+autocmd VimEnter * wincmd w
+" auto open nerd tree on TabEnter. Still buggy
+" function! IsNerdTreeEnabled()
+" 	return exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
+" endfunction
+" autocmd TabEnter * if !IsNerdTreeEnabled() | :NERDTreeToggle | endif
+
+" omnicompletion
+" always show menu
+:set completeopt=longest,menuone,noinsert,preview
+" trigger with . keypress
+function! OpenCompletion()
+	if !pumvisible() && (v:char == '.' || (v:char >= 'a' && v:char <= 'z') && "<cword>" != "func")
+		" open omni completion and highlight first option
+		call feedkeys("\<C-x>\<C-o>\<C-n>", "n")
+	endif
+endfunction
+autocmd InsertCharPre *.go call OpenCompletion()
+" Change enter behavior to be <C-y>
+:inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" set IDE pref
 :set number
 :set tabstop=4 shiftwidth=4
 :set ignorecase
 :set smartcase
-:NERDTreeToggle
 
-" omnicompletion
-" always show menu
-:set completeopt=longest,menuone
-" trigger with . keypress
-function! OpenCompletion()
-	if !pumvisible() && v:char == '.'
-		call feedkeys("\<C-x>\<C-o>", "n")
-	endif
-endfunction
-autocmd InsertCharPre * call OpenCompletion()
