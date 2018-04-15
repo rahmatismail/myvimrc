@@ -1,9 +1,3 @@
-" :augroup numbertoggle
-" :  autocmd!
-" :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-" :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-" :augroup END
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -18,6 +12,9 @@ Plug 'morhetz/gruvbox'
 " IDE Tools
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'https://github.com/kien/ctrlp.vim.git'
+Plug 'vim-airline/vim-airline'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'airblade/vim-gitgutter'
 " Plug 'dyng/ctrlsf.vim'
 
 " Git
@@ -32,22 +29,6 @@ Plug 'fatih/vim-go'
 
 call plug#end()
 
-" key remapping
-autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
-autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
-autocmd VimEnter * nmap <F4> :NERDTreeFind<CR>
-autocmd VimEnter * imap <F4> <Esc>:NERDTreeFind<CR>
-autocmd VimEnter * nmap <F2> <Esc>:noh<CR>
-let g:ale_lint_on_text_changed = 'never'
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-autocmd VimEnter * map <silent> <C-u> :tabm -1<CR>
-autocmd VimEnter * map <silent> <C-i> :tabm +1<CR>
-nnoremap <C-Delete> :tabclose<CR>
-map <C-n> :cn<CR>
-map <C-m> :cp<CR>
-inoremap <C-Space> <C-x><C-o><C-n>
-
 " set IDE pref
 set number
 set tabstop=4 shiftwidth=4
@@ -59,24 +40,39 @@ set nowrap
 set title
 colorscheme gruvbox
 set background=dark
-
-" NERDTree stuff
-:NERDTreeToggle
-autocmd VimEnter * wincmd w
-autocmd VimEnter * :NERDTreeFind
-autocmd VimEnter * wincmd w
-" auto open nerd tree on TabEnter. Still buggy
-" function! IsNerdTreeEnabled()
-" 	return exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
-" endfunction
-" autocmd TabEnter * if !IsNerdTreeEnabled() | :NERDTreeToggle | endif
-
-" omnicompletion
-" always show menu
+let g:ale_lint_on_text_changed = 'never'
 set completeopt=longest,menuone,noinsert,preview
-" trigger with . and alphabet keypress
-" TODO make vim popup works on alphabet keypress. And stop struggling if no
-" word match
+" nvim cursor bug on command line and ctrlp
+set guicursor=
+set updatetime=100
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+
+" key remapping
+autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
+autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
+autocmd VimEnter * nmap <F4> :NERDTreeFind<CR>
+autocmd VimEnter * imap <F4> <Esc>:NERDTreeFind<CR>
+autocmd VimEnter * nmap <F2> <Esc>:noh<CR>
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+autocmd VimEnter * map <silent> <C-u> :tabm -1<CR>
+autocmd VimEnter * map <silent> <C-i> :tabm +1<CR>
+nnoremap <C-\> :tabclose<CR>
+map <C-n> :cn<CR>
+map <C-m> :cp<CR>
+inoremap <C-Space> <C-x><C-o><C-n>
+autocmd BufEnter,VimLeavePre :source ~/.nvim_session
+
+if empty(glob("~/.nvim_session"))
+    :NERDTreeToggle
+    autocmd VimEnter * wincmd w
+    autocmd VimEnter * :NERDTreeFind
+    autocmd VimEnter * wincmd w
+else
+    autocmd VimEnter :mksession! ~./nvim_session
+endif
+
+" trigger completion menu on dot char
 function! OpenCompletion()
 	" if !pumvisible() && (v:char == '.' || (v:char >= 'a' && v:char <= 'z') && "<cword>" != "func")
 	if !pumvisible() && v:char == '.'
@@ -84,11 +80,13 @@ function! OpenCompletion()
 		call feedkeys("\<C-x>\<C-o>\<C-n>", "n")
 	endif
 endfunction
+
 autocmd InsertCharPre *.go call OpenCompletion()
 " Change enter behavior to be <C-y>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" nvim cursor bug on command line and ctrlp
-set guicursor=
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
-" inoremap <C-@> <C-Space>
+" if &term =~ '256color'
+    " Disable Background Color Erase (BCE) so that color schemes
+    " work properly when Vim is used inside tmux and GNU screen.
+    set t_ut=
+" endif
