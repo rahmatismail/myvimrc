@@ -14,10 +14,14 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'https://github.com/kien/ctrlp.vim.git'
 Plug 'vim-airline/vim-airline'
-" Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Raimondi/delimitMate'
+Plug 'terryma/vim-multiple-cursors'
+" Plug 'jiangmiao/auto-pairs'
+Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-scripts/Improved-AnsiEsc'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
+Plug 'ramele/agrep'
 
 " Autocompletion
 Plug 'Shougo/deoplete.nvim'
@@ -38,10 +42,13 @@ Plug 'w0rp/ale'
 " Go
 Plug 'fatih/vim-go'
 
-" Prettier
+" Typescript Prettier
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
+
+" HTML
+Plug 'mattn/emmet-vim'
 
 call plug#end()
 
@@ -54,11 +61,13 @@ set smartcase
 set diffopt=vertical,filler
 set nowrap
 set title
+set mouse=a
 colorscheme gruvbox
 " color dracula
 " syntax on
 set background=dark
 let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'hard'
 let g:ale_lint_on_text_changed = 'never'
 set completeopt=longest,menuone,noinsert,preview
 " nvim cursor bug on command line and ctrlp
@@ -73,7 +82,17 @@ let g:neosnippet#enable_completed_snippet = 1
 " prettier
 let g:prettier#config#use_tabs = 'true'
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+" delimitMate
+let delimitMate_expand_cr = 1
+au FileType maail let delimitMate_expand_cr = 1
+" airline
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+" emmet
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+" gitgutter
+let g:gitgutter_max_signs = 2000
 
 " key remapping
 autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
@@ -83,6 +102,10 @@ autocmd VimEnter * imap <F4> <Esc>:NERDTreeFind<CR>
 autocmd VimEnter * nmap <F5> :GoRun<CR>
 autocmd VimEnter * imap <F5> <Esc>:GoRun<CR>
 autocmd VimEnter * nmap <F2> <Esc>:noh<CR>
+autocmd VimEnter * nnoremap <F9> :call ToggleBackground()<CR>
+autocmd VimEnter * nnoremap <F9> <Esc>:call ToggleBackground()<CR>
+autocmd VimEnter * nnoremap <C-s> :w<CR>
+autocmd VimEnter * inoremap <C-s> <Esc>:w<CR>
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 autocmd VimEnter * map <silent> <C-u> :tabm -1<CR>
@@ -91,6 +114,9 @@ nnoremap <C-\> :tabclose<CR>
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 inoremap <C-Space> <C-x><C-o><C-n>
+vnoremap <C-c> :w !pbcopy<CR><CR>
+" Replace word inside selected text
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 autocmd BufEnter,VimLeavePre :source ~/.nvim_session
 autocmd FileType term wincmd J
 
@@ -115,8 +141,17 @@ function! OpenCompletion()
 	endif
 endfunction
 
+" toggle background
+function! ToggleBackground()
+    if &background=="dark"
+        set background=light
+    else
+        set background=dark
+    endif
+endfunction
+
 " Change enter behavior to be <C-y>
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <CR> pumvisible() ? \\\\"\<C-y>" : \\\\"\<C-g>u\<CR>"
 
 " if &term =~ '256color'
     " Disable Background Color Erase (BCE) so that color schemes
