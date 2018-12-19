@@ -12,35 +12,39 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 
 " IDE
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'https://github.com/kien/ctrlp.vim.git'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'kien/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'Raimondi/delimitMate'
 Plug 'terryma/vim-multiple-cursors'
 " Plug 'jiangmiao/auto-pairs'
-Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-scripts/Improved-AnsiEsc'
 Plug 'Yggdroot/indentLine'
-Plug 'airblade/vim-gitgutter'
 Plug 'ramele/agrep'
+" Plug 'majutsushi/tagbar'
 
 " Autocompletion
-Plug 'Shougo/deoplete.nvim'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'wokalski/autocomplete-flow'
+Plug 'Shougo/deoplete.nvim', {'tag': '4.0'}
+Plug 'zchee/deoplete-go'
+" ", {'do': 'make'}
+" Plug 'wokalski/autocomplete-flow'
 " For func argument completion
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet'
+" Plug 'Shougo/neosnippet-snippets'
 " Plug 'dyng/ctrlsf.vim'
 
 " Git
 Plug 'tpope/vim-fugitive', {'statusline': '%{fugitive#statusline()}'}
+Plug 'airblade/vim-gitgutter'
 
 " Syntax completion
 Plug 'w0rp/ale'
 " Plug 'https://github.com/Quramy/tsuquyomi.git'
 
 " Go
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', {'tag':'v1.18'}
+Plug 'buoto/gotests-vim'
 
 " Typescript Prettier
 Plug 'prettier/vim-prettier', {
@@ -69,16 +73,16 @@ set background=dark
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_contrast_light = 'hard'
 let g:ale_lint_on_text_changed = 'never'
-set completeopt=longest,menuone,noinsert,preview
+set completeopt=noinsert,preview
 " nvim cursor bug on command line and ctrlp
 set guicursor=
-set updatetime=100
+" set updatetime=500
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:neosnippet#enable_completed_snippet = 1
+" let g:neosnippet#enable_completed_snippet = 1
 " prettier
 let g:prettier#config#use_tabs = 'true'
 let g:prettier#autoformat = 0
@@ -92,7 +96,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 " gitgutter
-let g:gitgutter_max_signs = 2000
+let g:gitgutter_max_signs = 3000
 
 " key remapping
 autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
@@ -102,6 +106,8 @@ autocmd VimEnter * imap <F4> <Esc>:NERDTreeFind<CR>
 autocmd VimEnter * nmap <F5> :GoRun<CR>
 autocmd VimEnter * imap <F5> <Esc>:GoRun<CR>
 autocmd VimEnter * nmap <F2> <Esc>:noh<CR>
+autocmd VimEnter * nnoremap <F6> :TagbarToggle<CR>
+autocmd VimEnter * inoremap <F6> <Esc>:TagbarToggle<CR>
 autocmd VimEnter * nnoremap <F9> :call ToggleBackground()<CR>
 autocmd VimEnter * nnoremap <F9> <Esc>:call ToggleBackground()<CR>
 autocmd VimEnter * nnoremap <C-s> :w<CR>
@@ -125,9 +131,12 @@ if empty(glob("~/.nvim_session"))
     autocmd VimEnter * wincmd w
     autocmd VimEnter * :NERDTreeFind
     autocmd VimEnter * wincmd w
+    " autocmd VimEnter * :TagbarOpen
+    " autocmd TabEnter * :TagbarOpen
 else
     autocmd VimEnter :mksession! ~./nvim_session
 endif
+
 
 " autocmd VimEnter * :IndentLinesEnable
 " set list lcs=tab:\¦\  
@@ -158,3 +167,4 @@ endfunction
     " work properly when Vim is used inside tmux and GNU screen.
     set t_ut=
 " endif
+"
