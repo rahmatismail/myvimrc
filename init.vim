@@ -67,6 +67,10 @@ set nowrap
 set title
 set mouse=a
 colorscheme gruvbox
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
 " color dracula
 " syntax on
 set background=dark
@@ -76,6 +80,15 @@ let g:ale_lint_on_text_changed = 'never'
 set completeopt=noinsert,preview
 " nvim cursor bug on command line and ctrlp
 set guicursor=
+" let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+"       \ --ignore .git
+"       \ --ignore .svn
+"       \ --ignore .hg
+"       \ --ignore .DS_Store
+"       \ -g ""'
+
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
 " set updatetime=500
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 " deoplete
@@ -125,6 +138,7 @@ vnoremap <C-c> :w !pbcopy<CR><CR>
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 autocmd BufEnter,VimLeavePre :source ~/.nvim_session
 autocmd FileType term wincmd J
+" autocmd BufWritePost *.go :GoImports
 
 if empty(glob("~/.nvim_session"))
     :NERDTreeToggle
