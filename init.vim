@@ -37,8 +37,9 @@ Plug 'zchee/deoplete-go'
 " Git
 Plug 'tpope/vim-fugitive', {'statusline': '%{fugitive#statusline()}'}
 Plug 'airblade/vim-gitgutter'
+" Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
-" Syntax completion
+" Syntax check
 Plug 'w0rp/ale'
 " Plug 'https://github.com/Quramy/tsuquyomi.git'
 
