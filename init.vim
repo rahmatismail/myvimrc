@@ -67,6 +67,8 @@ set diffopt=vertical,filler
 set nowrap
 set title
 set mouse=a
+set clipboard=unnamed
+set clipboard=unnamedplus
 colorscheme gruvbox
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -134,7 +136,7 @@ nnoremap <C-\> :tabclose<CR>
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 inoremap <C-Space> <C-x><C-o><C-n>
-vnoremap <C-c> :w !pbcopy<CR><CR>
+" vnoremap <C-c> :w !pbcopy<CR><CR>
 " Replace word inside selected text
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 autocmd BufEnter,VimLeavePre :source ~/.nvim_session
