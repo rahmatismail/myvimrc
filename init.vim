@@ -22,7 +22,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-scripts/Improved-AnsiEsc'
 Plug 'Yggdroot/indentLine'
 Plug 'ramele/agrep'
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 " Autocompletion
 Plug 'Shougo/deoplete.nvim', {'tag': '4.0'}
@@ -93,7 +93,7 @@ set guicursor=
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " set updatetime=500
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
@@ -115,17 +115,26 @@ autocmd FileType html,css EmmetInstall
 let g:gitgutter_max_signs = 3000
 
 " key remapping
+autocmd VimEnter * nnoremap <F2> :noh<CR>
+autocmd VimEnter * nnoremap <C-2> :noh<CR>
 autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
 autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
+autocmd VimEnter * noremap <C-3> :NERDTreeToggle<CR>
+autocmd VimEnter * inoremap <C-3> <Esc>:NERDTreeToggle<CR>
 autocmd VimEnter * nmap <F4> :NERDTreeFind<CR>
 autocmd VimEnter * imap <F4> <Esc>:NERDTreeFind<CR>
-autocmd VimEnter * nmap <F5> :GoRun<CR>
-autocmd VimEnter * imap <F5> <Esc>:GoRun<CR>
-autocmd VimEnter * nmap <F2> <Esc>:noh<CR>
+autocmd VimEnter * nnoremap <C-4> :NERDTreeFind<CR>
+autocmd VimEnter * inoremap <C-4> <Esc>:NERDTreeFind<CR>
+autocmd VimEnter * nnoremap <F5> :GoRun<CR>
+autocmd VimEnter * nnoremap <C-5> :GoRun<CR>
 autocmd VimEnter * nnoremap <F6> :TagbarToggle<CR>
 autocmd VimEnter * inoremap <F6> <Esc>:TagbarToggle<CR>
+autocmd VimEnter * nnoremap <C-6> :TagbarToggle<CR>
+autocmd VimEnter * inoremap <C-6> <Esc>:TagbarToggle<CR>
 autocmd VimEnter * nnoremap <F9> :call ToggleBackground()<CR>
 autocmd VimEnter * nnoremap <F9> <Esc>:call ToggleBackground()<CR>
+autocmd VimEnter * nnoremap <C-9> :call ToggleBackground()<CR>
+autocmd VimEnter * nnoremap <C-9> <Esc>:call ToggleBackground()<CR>
 autocmd VimEnter * nnoremap <C-s> :w<CR>
 autocmd VimEnter * inoremap <C-s> <Esc>:w<CR>
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
