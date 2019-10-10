@@ -116,25 +116,15 @@ let g:gitgutter_max_signs = 3000
 
 " key remapping
 autocmd VimEnter * nnoremap <F2> :noh<CR>
-autocmd VimEnter * nnoremap <C-2> :noh<CR>
 autocmd VimEnter * nmap <F3> :NERDTreeToggle<CR>
 autocmd VimEnter * imap <F3> <Esc>:NERDTreeToggle<CR>
-autocmd VimEnter * noremap <C-3> :NERDTreeToggle<CR>
-autocmd VimEnter * inoremap <C-3> <Esc>:NERDTreeToggle<CR>
 autocmd VimEnter * nmap <F4> :NERDTreeFind<CR>
 autocmd VimEnter * imap <F4> <Esc>:NERDTreeFind<CR>
-autocmd VimEnter * nnoremap <C-4> :NERDTreeFind<CR>
-autocmd VimEnter * inoremap <C-4> <Esc>:NERDTreeFind<CR>
 autocmd VimEnter * nnoremap <F5> :GoRun<CR>
-autocmd VimEnter * nnoremap <C-5> :GoRun<CR>
 autocmd VimEnter * nnoremap <F6> :TagbarToggle<CR>
 autocmd VimEnter * inoremap <F6> <Esc>:TagbarToggle<CR>
-autocmd VimEnter * nnoremap <C-6> :TagbarToggle<CR>
-autocmd VimEnter * inoremap <C-6> <Esc>:TagbarToggle<CR>
 autocmd VimEnter * nnoremap <F9> :call ToggleBackground()<CR>
 autocmd VimEnter * nnoremap <F9> <Esc>:call ToggleBackground()<CR>
-autocmd VimEnter * nnoremap <C-9> :call ToggleBackground()<CR>
-autocmd VimEnter * nnoremap <C-9> <Esc>:call ToggleBackground()<CR>
 autocmd VimEnter * nnoremap <C-s> :w<CR>
 autocmd VimEnter * inoremap <C-s> <Esc>:w<CR>
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
