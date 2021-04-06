@@ -21,11 +21,13 @@ Plug 'terryma/vim-multiple-cursors'
 " Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-scripts/Improved-AnsiEsc'
 Plug 'Yggdroot/indentLine'
-Plug 'ramele/agrep'
+" Plug 'ramele/agrep' " does not work with nvim
 Plug 'majutsushi/tagbar'
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'yssl/QFEnter'
 
 " Autocompletion
-Plug 'Shougo/deoplete.nvim', {'tag': '4.0'}
+Plug 'Shougo/deoplete.nvim'
 Plug 'zchee/deoplete-go'
 " ", {'do': 'make'}
 " Plug 'wokalski/autocomplete-flow'
@@ -37,14 +39,14 @@ Plug 'zchee/deoplete-go'
 " Git
 Plug 'tpope/vim-fugitive', {'statusline': '%{fugitive#statusline()}'}
 Plug 'airblade/vim-gitgutter'
-" Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 " Syntax check
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 " Plug 'https://github.com/Quramy/tsuquyomi.git'
 
 " Go
-Plug 'fatih/vim-go', {'tag':'v1.18'}
+Plug 'fatih/vim-go'
 Plug 'buoto/gotests-vim'
 
 " Typescript Prettier
@@ -69,6 +71,7 @@ set title
 set mouse=a
 set clipboard=unnamed
 set clipboard=unnamedplus
+set nofixendofline
 colorscheme gruvbox
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -90,7 +93,7 @@ set guicursor=
 "       \ --ignore .DS_Store
 "       \ -g ""'
 
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " set updatetime=500
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
@@ -113,6 +116,7 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 " gitgutter
 let g:gitgutter_max_signs = 3000
+let g:go_def_mode='godef'
 
 " key remapping
 autocmd VimEnter * nnoremap <F2> :noh<CR>
@@ -174,6 +178,18 @@ function! ToggleBackground()
         set background=dark
     endif
 endfunction
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 " Change enter behavior to be <C-y>
 " inoremap <expr> <CR> pumvisible() ? \\\\"\<C-y>" : \\\\"\<C-g>u\<CR>"
